@@ -1,10 +1,11 @@
-# thorough comparison of D and Ds optimal designs using D and Ds efficiency (Table 4)
+# Comparison of D and Ds optimal designs using D and Ds efficiency (Table 4)
 
 rm(list=ls())
 library(numDeriv)
 
 
-#prior parameter values resulted using 120 real data (Tables 1 & 2)
+# prior parameter values resulting from parameter estimation 
+# A dataset with 120 observations has been used for this purpose (Tables 1 & 2)
 
 #prior values in the standard case
 priortheta.nc=c(8.6957,8.0664,12.0566,0) 
