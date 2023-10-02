@@ -68,7 +68,7 @@ comp.model=function(par,xval){
 #-----------------------------------------------------------------------------------------------------------------------
 # D-optimal designs
 
-# 4point D-optimal design for non competitive model
+# 4point D-optimal design for non competitive model (Denoted by 4D_N in Table 3)
 F.4nc=jacobian(func=combd.model, x=priortheta.nc, method="Richardson",xval=grid)
 D.4nc <- od_REX(as.matrix(F.4nc), crit = "D",alg.AA="REX", t.max = 50, eff = 1-1e-16)
 supportD.4nc=grid[D.4nc$w.best!=0,]
@@ -76,7 +76,7 @@ Dopt.4nc=cbind(supportD.4nc,weight.4D)
 Dopt.4nc
 #-----------------------------------------
 
-# 4point D-optimal design for competitive model
+# 4point D-optimal design for competitive model (Denoted by 4D_C in Table 3)
 F.4c=jacobian(func=combd.model, x=priortheta.c, method="Richardson",xval=grid)
 D.4c <- od_REX(as.matrix(F.4c), crit = "D",alg.AA="REX", t.max = 50, eff = 1-1e-16)
 supportD.4c=grid[D.4c$w.best!=0,]
@@ -84,7 +84,7 @@ Dopt.4c=cbind(supportD.4c,weight.4D)
 Dopt.4c
 #-----------------------------------------
 
-# 3point D-optimal design for non competitive model 
+# 3point D-optimal design for non-competitive model (Not presented in Table 3, but discussed in the Paper)
 F.3nc=jacobian(func=noncomp.model, x=priortheta.nc[1:3], method="Richardson",xval=grid)
 D.3nc <- od_REX(as.matrix(F.3nc), crit = "D",alg.AA="REX", t.max = 50, eff = 1-1e-16)
 supportD.3nc=grid[D.3nc$w.best!=0,]
@@ -92,7 +92,7 @@ Dopt.3nc=cbind(supportD.3nc,weight.3D)
 Dopt.3nc
 #-----------------------------------------
 
-# 3point D-optimal design for competitive model
+# 3point D-optimal design for competitive model (Not presented in Table 3, but discussed in the Paper)
 F.3c=jacobian(func=comp.model, x=priortheta.c[1:3], method="Richardson",xval=grid)
 D.3c <- od_REX(as.matrix(F.3c), crit = "D",alg.AA="REX", t.max = 50, eff = 1-1e-16)
 supportD.3c=grid[D.3c$w.best!=0,]
@@ -100,7 +100,7 @@ Dopt.3c=cbind(supportD.3c,weight.3D)
 Dopt.3c
 #-----------------------------------------
 
-# 4point D-optimal design for encompassing model
+# 4point D-optimal design for encompassing model (Denoted by 4D_E in the Table 3)
 F.4comb=jacobian(func=combd.model, x=priortheta.ds.comb, method="Richardson",xval=grid)
 D.4comb <- od_REX(as.matrix(F.4comb), crit = "D",alg.AA="REX", t.max = 50, eff = 1-1e-16)
 supportD.4comb=grid[D.4comb$w.best!=0,]
@@ -111,7 +111,7 @@ Dopt.4comb
 
 # optimal weights is computed through simplex method of LP (Harman R., Jurik T.(2008))
 
-# function to calculate D.s-optimal designs
+# function to calculate Ds-optimal designs
 Ds.weightfun=function(F,cv)
 {
   
@@ -130,7 +130,7 @@ Ds.weightfun=function(F,cv)
 }
 #-----------------------------------------
 
-#D-s optimal design for non competitive model
+# D-s optimal design for non competitive model (Denoted by Ds_N in Table 3)
 Ds.nc=Ds.weightfun(F.4nc,c.v)
 supportDs.nc=grid[Ds.nc$indicator,]
 weightDs.nc=Ds.nc$weight
@@ -138,7 +138,7 @@ Dsopt.nc=cbind(supportDs.nc,weightDs.nc)
 Dsopt.nc
 #-----------------------------------------
 
-#D-s optimal design for competitive model
+# D-s optimal design for competitive model (Denoted by Ds_C in Table 3)
 Ds.c=Ds.weightfun(F.4c,c.v)
 supportDs.c=grid[Ds.c$indicator,]
 weightDs.c=Ds.c$weight
@@ -146,8 +146,8 @@ Dsopt.c=cbind(supportDs.c,weightDs.c)
 Dsopt.c
 #-----------------------------------------
 
-
-#D-s optimal design for encompassing model (for discrimination)
+# D-s optimal design for model discrimination using the Encompassing model.
+# It is presented in the Standard case of Table 5, denoted by A3.
 F.Dscomb=jacobian(func=combd.model, x=priortheta.ds.comb, method="Richardson",xval=grid)
 Ds.comb=Ds.weightfun(F.Dscomb,c.v)
 supportDs.comb=grid[Ds.comb$indicator,]
@@ -155,7 +155,7 @@ weightDs.comb=Ds.comb$weight
 Dsopt.comb=cbind(supportDs.comb,weightDs.comb)
 Dsopt.comb
 #-----------------------------------------------------------------------------------------------------------------------
-#                                                        LOG-MODEL OPTIMAL DESIGNS
+#                                                       OPTIMAL DESIGNS FOR THE LOG-MODELS 
 #-----------------------------------------------------------------------------------------------------------------------
 #encompassing log model
 combd.logmodel=function(par,xval){
@@ -190,7 +190,7 @@ comp.logmodel=function(par,xval){
 # D-optimal designs for log models
 
 
-# 4point D-optimal design for non competitive log model
+# 4point D-optimal design for non competitive log model (Denoted by 4D_N in the Log case of Table 3)
 F.4lognc=jacobian(func=combd.logmodel, x=priortheta.lognc, method="Richardson",xval=gridprim)
 D.4lognc <- od_REX(as.matrix(F.4lognc), crit = "D",alg.AA="REX", t.max = 50, eff = 1-1e-16)
 supportD.4lognc=gridprim[D.4lognc$w.best!=0,]
@@ -198,14 +198,14 @@ Dopt.4lognc=cbind(supportD.4lognc,weight.4D)
 Dopt.4lognc
 
 #-----------------------------------------
-# 4point D-optimal design for competitive log model
+# 4point D-optimal design for competitive log model (Denoted by 4D_C in the Log case of Table 3)
 F.4logc=jacobian(func=combd.logmodel, x=priortheta.logc, method="Richardson",xval=gridprim)
 D.4logc <- od_REX(as.matrix(F.4logc), crit = "D",alg.AA="REX", t.max = 50, eff = 1-1e-16)
 supportD.4logc=gridprim[D.4logc$w.best!=0,]
 Dopt.4logc=cbind(supportD.4logc,weight.4D)
 Dopt.4logc
 #-----------------------------------------
-# D-optimal designs for non competitive log model 
+# D-optimal designs for non competitive log model (Denoted by 3D_N in the Log case of Table 3)
 # linearized at first three respective prior values
 # it has 4 points of support according to computation below!
 F.3lognc=jacobian(func=noncomp.logmodel, x=priortheta.lognc[1:3], method="Richardson",xval=gridprim)
@@ -215,7 +215,7 @@ Dopt.3lognc=cbind(supportD.3lognc,weight.4D)
 Dopt.3lognc
 
 #-----------------------------------------
-# 3point D-optimal designs for competitive log model
+# 3point D-optimal designs for competitive log model (Denoted by 3D_C in the Log case of Table 3)
 F.3logc=jacobian(func=comp.logmodel, x=priortheta.logc[1:3], method="Richardson",xval=gridprim)
 D.3logc <- od_REX(as.matrix(F.3logc), crit = "D",alg.AA="REX", t.max = 50, eff = 1-1e-16)
 supportD.3logc=gridprim[D.3logc$w.best!=0,]
@@ -223,14 +223,13 @@ Dopt.3logc=cbind(supportD.3logc,weight.3D)
 Dopt.3logc
 
 #-----------------------------------------
-# 4point D-optimal designs for encompassing log model
+# 4point D-optimal designs for encompassing log model (Denoted by 4D_E in the Log case of Table 3)
 F.4logcombd=jacobian(func=combd.logmodel, x=priortheta.ds.logcomb8, method="Richardson",xval=gridprim)
 D.4logcombd <- od_REX(as.matrix(F.4logcombd), crit = "D",alg.AA="REX", t.max = 50, eff = 1-1e-16)
 supportD.4logcombd=gridprim[D.4logcombd$w.best!=0,]
 Dopt.4logcombd=cbind(supportD.4logcombd,weight.4D)
 Dopt.4logcombd
 
-#-------------------------------------------------------------------------------------------------
 #-------------------------------------------------------------------------------------------------
 #-------------------------------------------------------------------------------------------------
 #robustness check of D-optimal designs w.r.t par. prior values (for the encompassing) [NOT presented in the paper]
@@ -246,14 +245,14 @@ Dopt.4logcombd
 ##################################################################################################
 # D-s optimal designs for log models
 
-#D-s optimal designs for non competitive log model
+#D-s optimal designs for non competitive log model (Denoted by Ds_N in the Log case of Table 3)
 Ds.lognc=Ds.weightfun(F.4lognc,c.v)
 supportDs.lognc=gridprim[Ds.lognc$indicator,]
 weightDs.lognc=Ds.lognc$weight
 Dsopt.lognc=cbind(supportDs.lognc,weightDs.lognc)
 Dsopt.lognc
 
-#D-s optimal designs for competitive log model
+#D-s optimal designs for competitive log model (Denoted by Ds_C in the Log case of Table 3)
 Ds.logc=Ds.weightfun(F.4logc,c.v)
 supportDs.logc=gridprim[Ds.logc$indicator,]
 weightDs.logc=Ds.logc$weight
@@ -261,9 +260,8 @@ Dsopt.logc=cbind(supportDs.logc,weightDs.logc)
 Dsopt.logc
 
 ##-------------------------------------------------------------------------------------------------
-# D-s optimal designs for discrimination
-
-#D-s optimal design for encompassing log model
+# D-s optimal design for model discrimination using the Encompassing log model.
+# It is presented in the Log case of Table 5, denoted by A3.
 Ds.logcomb.fun=function(prior){
   F.Ds.logcomb=jacobian(func=combd.logmodel, x=prior, method="Richardson",xval=gridprim)
   Ds.logcomb=Ds.weightfun(F.Ds.logcomb,c.v)

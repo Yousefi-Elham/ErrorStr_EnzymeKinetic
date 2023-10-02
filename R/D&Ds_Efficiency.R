@@ -1,4 +1,4 @@
-# Comparison of D and Ds optimal designs using D and Ds efficiency (Table 4)
+# Comparison of D and Ds optimal designs using D and Ds efficiencies (Table 4)
 
 rm(list=ls())
 library(numDeriv)
@@ -78,10 +78,10 @@ comp.logmodel=function(par,xval){
 }
 #--------------------------------------------------------------------------------------------------------------
 
-# designs of Table 3, D and Ds-optimal designs (Standard case)
+# Optimal designs of Table 3, D and Ds-optimal designs (Standard case)
 
-weight.6<-c(0.086,0.208,0.206,0.500)
-weight.7<-c(0.027,0.088,0.371,0.514)
+weight.6 <- c(0.086,0.208,0.206,0.500)
+weight.7 <- c(0.027,0.088,0.371,0.514)
 
 des1.4DNC<-data.frame(matrix(c(30,0,5.223,0,30,12.045,5.223,12.045),nrow=4,byrow=TRUE),rep(0.25,4),priortheta.nc)
 des1.3DNC<-data.frame(matrix(c(30,0,5.223,0,30,12.045),nrow=3,byrow=TRUE),rep(1/3,3),priortheta.nc[1:3])
@@ -101,7 +101,7 @@ des2.DsC<-data.frame(matrix(c(30,0,2.545,0,30,28.550,7.098,8.253),nrow=4,byrow=T
 
 
 #--------------------------------------------------------------------------------------------------------------
-# designs of Table 3, D and Ds-optimal designs (Log case)
+# Optimal designs of Table 3, D and Ds-optimal designs (Log case)
 
 des1.4DNlog<-data.frame(matrix(c(0.02,0,30.00,0,0.02,60,30.00,60),nrow=4,byrow=TRUE),rep(0.25,4), priortheta.lognc)
 des1.3DNlog<-data.frame(matrix(c(0.02,0,30.00,0,0.02,60,30.00,60),nrow=4,byrow=TRUE),rep(0.25,4), c(priortheta.lognc[1:3],-1) )
@@ -122,6 +122,7 @@ weight.10<-c(0.017,0.173,0.327,0.483)
 des2.DsClog<-data.frame(matrix(c(0.02,0,30.00,0,0.02,60,30.00,60),nrow=4,byrow=TRUE),weight.10)
 
 #--------------------------------------------------------------------------------------------------------------
+# create a list of all optimal designs, above
 design1=list(des1.4DNC=des1.4DNC,des1.3DNC=des1.3DNC,des1.4DC=des1.4DC,des1.3DC=des1.3DC,des1.4DComb=des1.4DComb,des1.DsN=des1.DsN,des1.DsC=des1.DsC,
              des1.4DNlog=des1.4DNlog,des1.3DNlog=des1.3DNlog,des1.4DClog=des1.4DClog,des1.3DClog=des1.3DClog,des1.4DComblog=des1.4DComblog,
              des1.DsNlog=des1.DsNlog,des1.DsClog=des1.DsClog)
@@ -132,13 +133,16 @@ design2=list(des2.4DNC=des2.4DNC,des2.3DNC=des2.3DNC,des2.4DC=des2.4DC,des2.3DC=
 
 NN=length(design1)
 
+
+# The setting used for comparison in the D and Ds efficiencies
 CASE=c(rep("stan.case",7),rep("log.case",7))
 method=c(rep("D.OPT",5),rep("Ds.OPT",2),rep("D.OPT",5),rep("Ds.OPT",2))
 MODEL=c("combd","noncomp","combd","comp","combd","combd","combd","combd","noncomp","combd","comp","combd","combd","combd")
 
 #--------------------------------------------------------------------------------------------------------------
-# Information Matrices 
+# Construction of the Information Matrices as a function of design, the respective model and the parameter estimates 
 
+# Full information matrix used for D-optimality
 M.func<-function(des.x,model,parm){
   F.mat<-jacobian(func=model, x=parm, method="Richardson",xval=des.x[,-3])
   w.mat<-diag(c(des.x[,3]),nrow=length(c(des.x[,3])))
@@ -147,6 +151,7 @@ M.func<-function(des.x,model,parm){
 }
 
 
+# Information Matrix of the nuisance parameters, used in Ds-optimality procedure
 Ms.func<-function(model1,model2,des.x,parm){
   F.mat<-jacobian(func=model1, x=parm, method="Richardson",xval=des.x[,-3])
   w.mat<-diag(c(des.x[,3]),nrow=length(c(des.x[,3])))
