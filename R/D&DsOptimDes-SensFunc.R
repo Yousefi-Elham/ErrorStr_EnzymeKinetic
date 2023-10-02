@@ -60,7 +60,7 @@ comp.logmodel=function(par,xval){
   eta=log((theta1*xval[,1]) / ((theta2*(1+(xval[,2]/theta3)))+xval[,1])) 
 }
 #--------------------------------------------------------------------------------------------------
-# D and Ds optimal designs (resulted from other programs)
+# D and Ds optimal designs (resulting from D&DsOptimalDesigns R script)
 # will be used here to plot sensitivity functions
 
 des.D4<-matrix(c(0.02,0,30.00,0,0.02,60,30.00,60),nrow=4,byrow=TRUE)
@@ -80,7 +80,7 @@ dest3<-matrix(c(0.02,0,30.00,0,0.02,60,30.00,60),nrow=4,byrow=TRUE)
 wt3<-c(0.1633,0.2189,0.2811,0.3367)
 
 #--------------------------------------------------------------------------------------------------
-#sensitivity function related to check of D-optimal designs
+# D-optimality sensitivity function: used to check if a calculated design is actually D-optimal
 D2.func<-function(model,prior,des.x,des.w,GRID2){
   
   D1.func<-function(GRID1){
@@ -102,29 +102,29 @@ D2.func<-function(model,prior,des.x,des.w,GRID2){
 
 
 #--------------------------------------------------------------------------------------------------
-#sensitivity function related to check of Ds-optimal designs
+# Ds-optimality sensitivity function: used to check if a calculated design is actually Ds-optimal
 D2.func1 <- function(model,model1,prior,des.x,des.w,GRID2){
   
   D1.func<-function(GRID1){
-    F.mat1<-jacobian(func=model, x=prior, method="Richardson",xval=des.x)
-    w.mat<-diag(des.w,nrow=length(des.w))
-    M<-t(F.mat1)%*%w.mat%*%F.mat1
+    F.mat1 <- jacobian(func=model, x=prior, method="Richardson",xval=des.x)
+    w.mat <- diag(des.w,nrow=length(des.w))
+    M <- t(F.mat1)%*%w.mat%*%F.mat1
     
     F.mat2<-jacobian(func=model, x=prior, method="Richardson",xval=GRID1)
     D=F.mat2%*%solve(M)%*%t(F.mat2)
     D
   }
   
-  D1star.func<-function(GRID1){
-    F.mat1star<-jacobian(func=model1, x=prior[1:3], method="Richardson",xval=des.x)
-    w.mat<-diag(des.w,nrow=length(des.w))
-    M22<-t(F.mat1star)%*%w.mat%*%F.mat1star
+  D1star.func <- function(GRID1){
+    F.mat1star <- jacobian(func=model1, x=prior[1:3], method="Richardson",xval=des.x)
+    w.mat <- diag(des.w,nrow=length(des.w))
+    M22 <- t(F.mat1star)%*%w.mat%*%F.mat1star
     
-    F.mat2star<-jacobian(func=model1, x=prior[1:3], method="Richardson",xval=GRID1)
+    F.mat2star <- jacobian(func=model1, x=prior[1:3], method="Richardson",xval=GRID1)
     Dstar=F.mat2star%*%solve(M22)%*%t(F.mat2star)
     Dstar
   }
-  ds.output<-c()
+  ds.output <- c()
   for(i in 1:nrow(GRID2)){
     ds.output[i]<-D1.func(GRID2[i,])-D1star.func(GRID2[i,])
   }
@@ -132,7 +132,9 @@ D2.func1 <- function(model,model1,prior,des.x,des.w,GRID2){
   
 }
 #--------------------------------------------------------------------------------------------------
-d.4NC<-D2.func(combd.logmodel,priortheta.lognc,des.D4,weight.4D,gridprim)
+#                           PLOT OF THE SENSITIVITY FUNCTIONS (PRESENTED IN THE APPENDIX)
+#--------------------------------------------------------------------------------------------------
+d.4NC <- D2.func(combd.logmodel,priortheta.lognc,des.D4,weight.4D,gridprim)
 max(d.4NC)
 
 z=matrix(d.4NC,60,60)
